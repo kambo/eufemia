@@ -4,6 +4,7 @@
 */
 
 @import '../../../../style/themes/imports.scss';
+@import '../dnb-table-mixins.scss';
 
 .dnb-table {
   text-align: left;
@@ -83,11 +84,8 @@
       padding: 0.875rem 1rem;
 
       // typography
-      &,
-      .dnb-p {
-        font-size: var(--font-size-small);
-        line-height: var(--line-height-small);
-      }
+      font-size: var(--font-size-small);
+      line-height: var(--line-height-small);
     }
 
     .dnb-table__size--small & {
@@ -95,31 +93,21 @@
       padding: 0.625rem 1rem;
 
       // typography
-      &,
-      .dnb-p {
-        font-size: var(--font-size-small);
-        line-height: var(--line-height-small);
-      }
+      font-size: var(--font-size-small);
+      line-height: var(--line-height-small);
     }
   }
 
-  // NB: In case we still would need a border on the table head row
-  // &:not(#{&}--border):not(#{&}--outline) > thead > tr > th::after,
-  // &:not(#{&}--border):not(#{&}--outline) > thead > &__tr > &__th::after,
-
   // border
-  & > tbody > &__tr:last-of-type > &__td::after,
-  &
+  &:not(&--outline) > tbody > &__tr:last-of-type > &__td::after,
+  &:not(&--outline) > tbody > &__tr:last-of-type > &__th::after,
+  &:not(&--outline)
     > tbody
     > &__tr#{&}__tr--has-accordion-content:not(#{&}__tr--expanded):nth-last-child(2)
     td::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0; // don't use negative value, else it will be hidden when accordion
+    @include tableBorder();
 
-    border-bottom: var(--outline);
+    border-bottom: var(--border);
   }
 }
 
@@ -129,11 +117,14 @@
 
 .dnb-table,
 .dnb-table__container {
+  --border-width: 0.0625rem;
+  --outline-width: 0.0625rem;
+
   // table border
-  --border: 0.0625rem solid var(--color-black-8);
+  --border: var(--border-width) solid var(--color-black-8);
 
   // table outline
-  --outline: 0.0625rem solid var(--color-black-8);
+  --outline: var(--outline-width) solid var(--color-black-8);
 
   html[data-visual-test] & {
     --border: 0.0625rem solid blue;

@@ -21,6 +21,10 @@ Spacing follows a specific pattern:
 
 <SpacingTable />
 
+### Code Editor Extensions
+
+You may be interested to install an [Eufemia code editor extension](/uilib/helpers/tools/#code-editor-extensions) that allows you to quickly auto complete the correct spacing.
+
 ## Components and Spacing
 
 Also, have a look at the [Space](/uilib/components/space) component and the fact that every component supports [spacing out of the box](/uilib/components/space#components-and-spacing).
@@ -28,7 +32,7 @@ Also, have a look at the [Space](/uilib/components/space) component and the fact
 ```jsx
 <Button top="small" />
 <Button right="large x-small medium" />
-<Button space={{ top='small', right: 'large x-small medium' }} />
+<Button space={{ top:'small', right: 'large x-small medium' }} />
 ```
 
 ### CSS Custom Property
@@ -56,21 +60,22 @@ const Custom = styled(Space)`
 </Custom>
 ```
 
-## Using a Spacing helper
+## Using Spacing helpers
 
-The **SpacingHelper** can be used for all kinds of systems.
-The idea is, You send in `createStyleObject({ top: 'large' })` and will get `{ marginTop: 2rem }` in return.
+You may use the internals to build helpers suited to your needs.
 
-### Styled Components (Emotion)
-
-```js
-import { SpacingHelper } from '@dnb/eufemia/shared'
+```tsx
+import { calc } from '@dnb/eufemia/components/space/SpacingUtils'
 
 // With Styled Components
-const Spacing = styled.div(SpacingHelper)
-
-// A div with a margin-top of 2rem
-<Spacing top="large">
-  ...
-</Spacing>
+const StyledDiv = styled.div`
+  margin-top: ${calc('medium large')};
+  margin-top: ${calc('medium', 'large')};
+  margin-top: ${calc('1.5rem', '2rem')};
+  margin-top: ${calc('24px', '32px')};
+`
 ```
+
+All of the examples do output: `calc(var(--spacing-medium) + var(--spacing-large))`
+
+Invalid values will be corrected to its nearest spacing type (e.g. 17px to `var(--spacing-small)`).

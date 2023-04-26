@@ -18,6 +18,8 @@ Here is a list of things you may follow along in order to ensure your coded tabl
 - Let tables align the column width, when possible.
 - Do not use CSS `display` property on any table element.
 - Do not overwrite styles in general, but rather get in touch with DNB UX.
+- Never put a table inside a table.
+- Text inside tables do not need to be wrapped inside a paragraph as well. They give screen readers no additional useful information.
 
 ## Table header components
 
@@ -72,8 +74,13 @@ It can be used as a "controller" for your own sorting logic of your data.
 
 By default, it will cycle trough three stages `['asc', 'desc', 'off']`.
 
+<details>
+  <summary class="dnb-p">
+    Show how to use the useHandleSortState React Hook.
+  </summary>
+
 ```jsx
-import { useHandleSortState } from '@dnb/eufemia/components/table'
+import useHandleSortState from '@dnb/eufemia/components/table/useHandleSortState'
 
 // You can also provide a default that will be used as the fallback e.g.
 const defaultOptions = { direction: 'asc', modes: ['asc', 'desc', 'off'] }
@@ -93,6 +100,24 @@ export const YourComponent = () => {
   // Use these properties for your custom sorting logic
   console.log(sortState.column1.direction) // returns either "asc", "desc" or "off"
   console.log(activeSortName) // returns the current active one: "column1" (returns null when nothing is active)
+
+  // Handle your logic
+  useEffect(() => {
+    switch (sortState.column1.direction) {
+      default:
+      case 'asc':
+        setYourLocalState(mockData.sort(compareFunctionAsc))
+        break
+
+      case 'desc':
+        setYourLocalState(mockData.sort(compareFunctionsDesc))
+        break
+
+      case 'off':
+        setYourLocalState(mockData)
+        break
+    }
+  }, [sortState.column1.direction])
 
   return (
     <Table>
@@ -115,3 +140,5 @@ export const YourComponent = () => {
   )
 }
 ```
+
+</details>

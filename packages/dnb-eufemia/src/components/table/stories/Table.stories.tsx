@@ -16,7 +16,7 @@ import TableContainer from '../TableContainer'
 import { H2, P, Anchor, Dl, Lead } from '../../../elements'
 import { Button, ToggleButton, NumberFormat, Avatar } from '../../'
 import shopping_cart from '../../../icons/shopping_cart'
-import { useHandleSortState } from '../'
+import useHandleSortState from '../useHandleSortState'
 
 export default {
   title: 'Eufemia/Components/Table',
@@ -98,9 +98,12 @@ export const StickyBasicTable = () => {
 export const ContainerTable = () => {
   const StyledContainer = styled(TableContainer)`
     /* Define the width of the THs so they are aligned accross tables */
+    &,
+    .dnb-table__scroll-view {
+      max-width: 70rem;
+    }
     .dnb-table__container__body {
       min-width: 800px;
-      max-width: 70rem;
     }
     table {
       thead {
@@ -452,6 +455,9 @@ const ContentTr = ({
       expanded={expanded}
       disabled={disabled}
       // noAnimation
+      onClick={trClickHandler}
+      onOpened={trOpenHandler}
+      onClosed={trCloseHandler}
       {...rest}
     >
       <Td>
@@ -514,6 +520,15 @@ const ContentTr = ({
     </Tr>
   )
 
+  function trClickHandler(event) {
+    console.log('trClickHandler', event)
+  }
+  function trOpenHandler(event) {
+    console.log('trOpenHandler', event)
+  }
+  function trCloseHandler(event) {
+    console.log('trCloseHandler', event)
+  }
   function buttonClickHandler({ event }) {
     event.preventDefault()
   }
@@ -598,6 +613,7 @@ export const TableAccordion = () => {
           outline
           border
           size="large"
+          sticky
           // lang="no"
         >
           <TableContent />
@@ -613,4 +629,92 @@ export const TableAccordion = () => {
       />
     </main>
   )
+}
+
+export function TableSort() {
+  const { sortState, sortHandler } = useHandleSortState({
+    column1: {
+      active: true,
+      direction: 'asc',
+    },
+    column2: {
+      direction: 'desc',
+    },
+  })
+
+  interface Column1 {
+    name: string
+    minAmount: number
+  }
+
+  const product1: Column1 = { name: 'cab', minAmount: 1 }
+  const product2: Column1 = { name: 'abc', minAmount: 3 }
+  const product3: Column1 = { name: 'bac', minAmount: 2 }
+
+  const mockData = [product1, product2, product3]
+
+  const [sortedColumn1, setColumn1Data] =
+    React.useState<Column1[]>(mockData)
+
+  React.useEffect(() => {
+    switch (sortState.column1.direction) {
+      case 'asc':
+        setColumn1Data([...mockData].sort(compareAsc))
+        break
+
+      case 'desc':
+        setColumn1Data([...mockData].sort(compareDesc))
+        break
+
+      default:
+      case 'off':
+        setColumn1Data(mockData)
+        break
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortState.column1.direction])
+
+  return (
+    <Table>
+      <thead>
+        <Tr>
+          <Th
+            scope="col"
+            sortable
+            active={sortState.column1.active}
+            reversed={sortState.column1.reversed}
+          >
+            <Th.SortButton text="Name" onClick={sortHandler.column1} />
+          </Th>
+          <Th
+            scope="col"
+            sortable
+            active={sortState.column2.active}
+            reversed={sortState.column2.reversed}
+          >
+            <Th.SortButton
+              text="Min amount"
+              onClick={sortHandler.column2}
+            />
+          </Th>
+        </Tr>
+      </thead>
+      <tbody>
+        {sortedColumn1.map((product) => (
+          <Tr key={product.minAmount}>
+            <Td>{product.name}</Td>
+            <Td>{product.minAmount}</Td>
+          </Tr>
+        ))}
+      </tbody>
+    </Table>
+  )
+
+  function compareDesc(a: Column1, b: Column1) {
+    return b.name.localeCompare(a.name)
+  }
+
+  function compareAsc(a: Column1, b: Column1) {
+    return a.name.localeCompare(b.name)
+  }
 }

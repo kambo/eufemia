@@ -28,9 +28,9 @@ describe('useHandleSortState', () => {
       },
       sortState: {
         one: {
-          active: undefined,
-          reversed: false,
-          direction: 'asc',
+          active: false,
+          reversed: undefined,
+          direction: 'off',
         },
       },
     })
@@ -102,7 +102,7 @@ describe('useHandleSortState', () => {
     })
   })
 
-  it('should return active with reverted direction', () => {
+  it('should return active with default direction', () => {
     const { result } = renderHook(useHandleSortState, {
       initialProps: {
         one: { active: true },
@@ -117,8 +117,8 @@ describe('useHandleSortState', () => {
       sortState: {
         one: {
           active: true,
-          reversed: false,
-          direction: 'asc',
+          reversed: undefined,
+          direction: 'off',
         },
       },
     })
@@ -238,6 +238,20 @@ describe('useHandleSortState', () => {
     simulate()
 
     expect(result.current).toEqual({
+      activeSortName: 'one',
+      sortHandler,
+      sortState: {
+        one: {
+          active: true,
+          reversed: false,
+          direction: 'asc',
+        },
+      },
+    })
+
+    simulate()
+
+    expect(result.current).toEqual({
       activeSortName: null,
       sortHandler,
       sortState: {
@@ -288,6 +302,158 @@ describe('useHandleSortState', () => {
       sortState: {
         one: {
           active: true,
+          reversed: false,
+          direction: 'asc',
+        },
+        two: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateOne()
+
+    expect(result.current).toEqual({
+      activeSortName: 'one',
+      sortHandler,
+      sortState: {
+        one: {
+          active: true,
+          reversed: true,
+          direction: 'desc',
+        },
+        two: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateOne()
+
+    expect(result.current).toEqual({
+      activeSortName: null,
+      sortHandler,
+      sortState: {
+        one: {
+          active: false,
+          reversed: undefined,
+          direction: 'off',
+        },
+        two: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateOne()
+
+    expect(result.current).toEqual({
+      activeSortName: 'one',
+      sortHandler,
+      sortState: {
+        one: {
+          active: true,
+          direction: 'asc',
+          reversed: false,
+        },
+        two: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateOne()
+
+    expect(result.current).toEqual({
+      activeSortName: 'one',
+      sortHandler,
+      sortState: {
+        one: {
+          active: true,
+          direction: 'desc',
+          reversed: true,
+        },
+        two: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateTwo()
+
+    expect(result.current).toEqual({
+      activeSortName: 'two',
+      sortHandler,
+      sortState: {
+        one: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+        two: {
+          active: true,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateTwo()
+
+    expect(result.current).toEqual({
+      activeSortName: 'two',
+      sortHandler,
+      sortState: {
+        one: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+        two: {
+          active: true,
+          reversed: false,
+          direction: 'asc',
+        },
+      },
+    })
+
+    simulateTwo()
+
+    expect(result.current).toEqual({
+      activeSortName: 'two',
+      sortHandler,
+      sortState: {
+        one: {
+          active: false,
+          reversed: true,
+          direction: 'desc',
+        },
+        two: {
+          active: true,
+          reversed: true,
+          direction: 'desc',
+        },
+      },
+    })
+
+    simulateOne()
+
+    expect(result.current).toEqual({
+      activeSortName: 'one',
+      sortHandler,
+      sortState: {
+        one: {
+          active: true,
           reversed: true,
           direction: 'desc',
         },
@@ -350,70 +516,33 @@ describe('useHandleSortState', () => {
         },
         two: {
           active: false,
-          reversed: true,
           direction: 'desc',
+          reversed: true,
         },
       },
     })
+  })
 
-    simulateTwo()
-
-    expect(result.current).toEqual({
-      activeSortName: 'two',
-      sortHandler,
-      sortState: {
+  it('should set correct direction/active state when switching from active column', () => {
+    const { result } = renderHook(useHandleSortState, {
+      initialProps: {
         one: {
-          active: false,
-          reversed: true,
-          direction: 'desc',
-        },
-        two: {
           active: true,
-          reversed: true,
-          direction: 'desc',
-        },
-      },
-    })
-
-    simulateTwo()
-
-    expect(result.current).toEqual({
-      activeSortName: 'two',
-      sortHandler,
-      sortState: {
-        one: {
-          active: false,
-          reversed: true,
-          direction: 'desc',
-        },
-        two: {
-          active: true,
-          reversed: false,
           direction: 'asc',
         },
-      },
-    })
-
-    simulateTwo()
-
-    expect(result.current).toEqual({
-      activeSortName: 'two',
-      sortHandler,
-      sortState: {
-        one: {
-          active: false,
-          reversed: true,
-          direction: 'desc',
-        },
         two: {
-          active: true,
-          reversed: true,
           direction: 'desc',
         },
       },
     })
 
-    simulateOne()
+    const sortHandler = {
+      one: expect.any(Function),
+      two: expect.any(Function),
+    }
+
+    const simulateOne = () => act(() => result.current.sortHandler.one())
+    const simulateTwo = () => act(() => result.current.sortHandler.two())
 
     expect(result.current).toEqual({
       activeSortName: 'one',
@@ -421,18 +550,37 @@ describe('useHandleSortState', () => {
       sortState: {
         one: {
           active: true,
-          reversed: true,
-          direction: 'desc',
+          direction: 'asc',
+          reversed: false,
         },
         two: {
           active: false,
-          reversed: true,
           direction: 'desc',
+          reversed: true,
         },
       },
     })
 
-    simulateOne()
+    simulateTwo()
+
+    expect(result.current).toEqual({
+      activeSortName: 'two',
+      sortHandler,
+      sortState: {
+        one: {
+          active: false,
+          direction: 'asc',
+          reversed: false,
+        },
+        two: {
+          active: true,
+          direction: 'desc',
+          reversed: true,
+        },
+      },
+    })
+
+    simulateTwo()
 
     expect(result.current).toEqual({
       activeSortName: null,
@@ -440,32 +588,13 @@ describe('useHandleSortState', () => {
       sortState: {
         one: {
           active: false,
-          reversed: undefined,
-          direction: 'off',
-        },
-        two: {
-          active: false,
-          reversed: true,
-          direction: 'desc',
-        },
-      },
-    })
-
-    simulateOne()
-
-    expect(result.current).toEqual({
-      activeSortName: 'one',
-      sortHandler,
-      sortState: {
-        one: {
-          active: true,
-          reversed: false,
           direction: 'asc',
+          reversed: false,
         },
         two: {
           active: false,
-          reversed: true,
-          direction: 'desc',
+          direction: 'off',
+          reversed: undefined,
         },
       },
     })
@@ -478,13 +607,13 @@ describe('useHandleSortState', () => {
       sortState: {
         one: {
           active: true,
-          reversed: true,
-          direction: 'desc',
+          direction: 'asc',
+          reversed: false,
         },
         two: {
           active: false,
-          direction: 'desc',
-          reversed: true,
+          direction: 'off',
+          reversed: undefined,
         },
       },
     })
