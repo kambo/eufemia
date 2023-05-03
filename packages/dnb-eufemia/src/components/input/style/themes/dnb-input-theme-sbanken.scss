@@ -1,0 +1,45 @@
+/*
+* Input theme
+*
+*/
+
+@import '../../../../style/core/utilities.scss';
+
+.dnb-input {  
+  --input-height: 2.5rem;
+  --input-border-radius: 0.5rem;
+
+  &__shell {
+    border-color: var(--sb-color-gray-dark-2);
+    transition: border-radius 0.250s ease-out;
+  }
+
+  &__placeholder {
+    color: var(--sb-color-gray-dark-3);
+  }
+
+  &[data-input-state='disabled'] &__shell {
+    &,
+    .dnb-icon {
+      color: var(--sb-color-gray-dark-2);
+    }
+    -webkit-text-fill-color: currentcolor;
+
+    border-color: var(--sb-color-gray);
+    background-color: var(--sb-color-gray-light);
+  }
+
+  &:not([data-input-state='disabled'])  {
+    // Hover
+    &:hover, .dnb-input__shell:hover{
+      border-color: var(--sb-color-violet);
+    }
+
+    // Focus
+    &[data-input-state='focus'] .dnb-input__shell {
+      border-color: var(--sb-color-violet);
+      border-radius: 1.5rem;
+      @include focusRing(null, null, inset); // keyboard only
+    }
+  }
+}
