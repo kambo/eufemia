@@ -1,0 +1,111 @@
+.flexContainer {
+  display: flex; 
+}
+
+// Direction
+
+.directionRow {
+  flex-direction: row;
+}
+
+.directionColumn {
+  flex-direction: column;
+}
+
+// Justify
+
+.justifyFlexStart {
+  justify-content: flex-start;
+}
+
+.justifyFlexEnd {
+  justify-content: flex-end;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.justifySpaceBetween {
+  justify-content: space-between;
+}
+
+.justifySpaceAround {
+  justify-content: space-around;
+}
+
+.justifySpaceEvenly {
+  justify-content: space-evenly;
+}
+
+// Align
+
+.alignFlexStart {
+  align-items: flex-start;
+}
+
+.alignFlexEnd {
+  align-items: flex-end;
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.alignStretch {
+  align-items: stretch;
+}
+
+.alignBaseline {
+  align-items: baseline;
+}
+
+
+
+// Wrap
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+// Column -> Divider & spacing
+
+.directionColumn.spacingNone {
+  row-gap: 0;
+}
+
+.directionColumn.spacingSmall {
+  row-gap: var(--spacing-small);
+}
+
+.directionColumn.spacingMedium {
+  row-gap: var(--spacing-medium);
+}
+
+.directionColumn.dividerLine {
+  > :not(:first-child) {
+    border-top: 1px solid var(--color-black-8);
+  }
+}
+
+.directionColumn.dividerLine.spacingSmall {
+  > :not(:first-child) {
+    padding-top: var(--spacing-small);
+  }
+}
+
+.directionColumn.dividerLine.spacingMedium {
+  > :not(:first-child) {
+    padding-top: var(--spacing-small);
+  }
+}
+
+// Row -> Divider & spacing
+
+.directionRow.spacingSmall {
+  column-gap: var(--spacing-small);
+}
+
+.directionRow.spacingMedium {
+  column-gap: var(--spacing-medium);
+}

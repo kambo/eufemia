@@ -1,0 +1,18 @@
+// @import '@pm-netbank/styles/src/mixins';
+
+.card {
+  //@include card(var(--spacing-small));
+  background-color: var(--color-white);
+  border: 1px solid var(--color-black-8);
+  border-radius: 0.25rem;
+  padding: var(--spacing-small);
+}
+
+.heading {
+  font-size: var(--font-size-basis);
+  font-weight: var(--font-weight-medium);
+}
+
+.card + .heading {
+  margin-top: var(--spacing-small);
+}

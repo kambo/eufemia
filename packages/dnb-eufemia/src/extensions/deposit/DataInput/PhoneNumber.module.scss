@@ -1,0 +1,13 @@
+.phoneNumberInputStyle {
+  display: flex;
+  flex-flow: row;
+  column-gap: var(--spacing-small);
+}
+
+.countryCodeInputStyle {
+  flex: 0 250px;
+}
+
+.numberInputStyle {
+  flex: 1;
+}

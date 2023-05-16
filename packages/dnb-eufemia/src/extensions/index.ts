@@ -10,7 +10,8 @@
  */
 
 // import all the available components
+import Deposit from './deposit/Deposit'
 import PaymentCard from './payment-card/PaymentCard'
 
 // define / export all the available components
-export { PaymentCard }
+export { Deposit, PaymentCard }

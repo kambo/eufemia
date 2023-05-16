@@ -1,0 +1,24 @@
+@import '@dnb/eufemia/src/style/core/utilities.scss';
+
+.steps {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 48px;
+
+  @media (max-width: map-get($breakpoints, 'medium')) {
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+  }
+}
+
+.sidebar {
+  flex: 0;
+  min-width: 320px;
+}
+
+.contents {
+  flex: 1;
+  min-width: 400px;
+}
+

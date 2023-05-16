@@ -48,7 +48,6 @@ export enum Designs {
   businessNoVisa, // eslint-disable-line
   businessWithVisa // eslint-disable-line
 }
-
 export interface PaymentCardRawData {
   productCode: string;
   productName: string;
